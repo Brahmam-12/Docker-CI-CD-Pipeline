@@ -1,0 +1,25 @@
+<h1>Welcome to the Full Stack App With Docker</h1>
+
+<div class="row">
+    <div class="row-1">
+      <button (click)="addUser()">Add User</button>
+      <p>This is the backend of the application.</p>
+    </div>
+
+  <div *ngIf="users.length">
+    <h3>Users List</h3>
+    <ul>
+      <li *ngFor="let u of users">
+        {{ u.name }} ({{ u.age }})
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="adduserToggle" class="row-2">
+  <form (submit)="submitUser(userForm.value); userForm.reset()" #userForm="ngForm">
+    <input type="text" placeholder="Name" name="name" [(ngModel)]="user.name" required>
+    <input type="number" placeholder="Age" name="age" [(ngModel)]="user.age" required>
+    <button type="submit">Submit</button>
+  </form>
+</div>

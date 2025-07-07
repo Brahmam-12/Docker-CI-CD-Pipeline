@@ -1,0 +1,39 @@
+.row {
+    display: flex;
+    justify-content: space-around;
+    background: aliceblue;
+}
+
+.row-1 {
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    flex-direction: column;
+    text-align: center;
+}
+
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    align-items: center;
+}
+
+input {
+    padding: 5px;
+    margin: 5px;
+    width: 200px;
+}
+.row-2 {
+    display: flex;
+    justify-content: center;
+}
+button {
+    height: 30px;
+    width: 100px;
+}
