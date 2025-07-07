@@ -1,6 +1,7 @@
 # Step 1: Build the Angular app
 FROM node:18 AS builder
 WORKDIR /app
+COPY package*.json ./
 COPY . .
 RUN npm install
 RUN npm run build --configuration production
