@@ -1,15 +1,16 @@
 # Step 1: Build the Angular app
 FROM node:18 AS builder
 
+# Install Angular CLI
+RUN npm install -g @angular/cli
+
 WORKDIR /app
 
-# Copy only package.json and lock file first
+# Copy package files and install dependencies
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the source code
+# Copy all other source files
 COPY . .
 
 # Build the app
@@ -17,5 +18,9 @@ RUN ng build --configuration=production
 
 # Step 2: Serve with NGINX
 FROM nginx:alpine
+
+# Copy build output to NGINX html folder
 COPY --from=builder /app/dist/frontend /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Optional: custom NGINX config (only if you have it)
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
