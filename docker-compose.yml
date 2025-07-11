@@ -6,8 +6,7 @@ services:
       - "27017:27017"
 
   backend:
-    build:
-      context: ./backend
+    image: veerabrahmam000/my-backend:latest
     ports:
       - "5000:5000"
     depends_on:
@@ -16,8 +15,7 @@ services:
       - MONGO_URL=mongodb://mongo:27017/mydatabase
 
   frontend:
-    build:
-      context: ./frontend
+    image: veerabrahmam000/my-frontend:latest
     ports:
       - "80:80"
     depends_on:
