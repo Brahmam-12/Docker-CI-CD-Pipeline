@@ -10,10 +10,10 @@ export class AppService {
   constructor(private http: HttpClient) {}
 
   getData() {
-    return this.http.get(environment.API_URL); // /api/users
+    return this.http.get(`${environment.API_URL}/users`);
   }
 
   postData(user: any) {
-    return this.http.post(environment.API_URL, user); // /api/users
+    return this.http.post(`${environment.API_URL}/users`, user);
   }
 }

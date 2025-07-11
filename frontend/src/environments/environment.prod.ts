@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  API_URL : '/api/users'  // No IP, proxy handles routing
+  API_URL : '/api'  // Base path to your backend
 };

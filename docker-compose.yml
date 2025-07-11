@@ -1,17 +1,13 @@
+version: '3'
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+  mongo:
+    image: mongo
     ports:
-      - "80:80"
-    depends_on:
-      - backend
+      - "27017:27017"
 
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     depends_on:
@@ -19,7 +15,10 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/mydatabase
 
-  mongo:
-    image: mongo
+  frontend:
+    build:
+      context: ./frontend
     ports:
-      - "27017:27017"
+      - "80:80"
+    depends_on:
+      - backend

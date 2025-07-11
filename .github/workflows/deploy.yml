@@ -1,4 +1,4 @@
-name: Deploy Fullstack App
+name: Build and Deploy Fullstack App
 
 on:
   push:
@@ -13,21 +13,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build & Push Backend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-backend:latest ./backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+
+      - name: Build & Push Frontend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-frontend:latest
+
+      - name: Setup SSH Access
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Copy files to EC2
+      - name: SSH Deploy to EC2
         run: |
-          rsync -avz -e "ssh -i ~/.ssh/id_rsa" . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            docker pull ${{ secrets.DOCKER_USERNAME }}/my-backend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/my-frontend:latest
 
-      - name: Deploy via SSH
-        run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
             cd /home/${{ secrets.EC2_USER }}/app
             docker-compose down
-            docker-compose up --build -d
+            docker-compose up -d
           EOF
