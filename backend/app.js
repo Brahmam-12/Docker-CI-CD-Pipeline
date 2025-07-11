@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Fullstack App Backend!');   
 });
 
-app.get('/api/users', async (req, res) => {
+app.get('/users', async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -31,7 +31,7 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-app.post('/api/users', async (req, res) => {
+app.post('/users', async (req, res) => {
     console.log(req.body);
   try {
     const newUser = new User(req.body);
